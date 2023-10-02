@@ -1,4 +1,4 @@
-# live_sync_flutter_app
+# Live Sync Flutter App
 
 A new Flutter project.
 
