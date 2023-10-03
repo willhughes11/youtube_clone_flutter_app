@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 
-MaterialColor customBlack = const MaterialColor(
-  0xFF000000,
-  <int, Color>{
-    50: Color(0xFFE0E0E0),
-    100: Color(0xFFB0B0B0),
-    200: Color(0xFF808080),
-    300: Color(0xFF606060),
-    400: Color(0xFF404040),
-    500: Color(0xFF000000),
-    600: Color(0xFF000000),
-    700: Color(0xFF000000),
-    800: Color(0xFF000000),
-    900: Color(0xFF000000),
-  },
-);
+MaterialColor customBlack = createMaterialColor(const Color(0xFF000000)); // Primary black
+
+MaterialColor createMaterialColor(Color color) {
+  List<Color> shades = <Color>[];
+  for (int i = 0; i <= 9; i++) {
+    double factor = i / 9.0;
+    Color shade = Color.lerp(Colors.white, color, factor)!;
+    shades.add(shade);
+  }
+  return MaterialColor(color.value, <int, Color>{
+    50: shades[0],
+    100: shades[1],
+    200: shades[2],
+    300: shades[3],
+    400: shades[4],
+    500: shades[5],
+    600: shades[6],
+    700: shades[7],
+    800: shades[8],
+    900: shades[9], // Primary color
+  });
+}

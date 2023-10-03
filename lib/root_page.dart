@@ -18,6 +18,7 @@ class _RootPageState extends State<RootPage> {
       // body: pages[currentPage],
       body: const HomePage(),
       appBar: AppBar(
+        backgroundColor: customBlack.shade800,
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -71,7 +72,7 @@ class _RootPageState extends State<RootPage> {
               label: 'Library'),
         ],
         type: BottomNavigationBarType.fixed,
-        backgroundColor: customBlack,
+        backgroundColor: customBlack.shade800,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         selectedLabelStyle: const TextStyle(fontSize: 12),

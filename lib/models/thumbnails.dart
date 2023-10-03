@@ -4,9 +4,9 @@ import 'package:json_annotation/json_annotation.dart';
 class Thumbnails {
   final ThumbnailInfo default_;
   final ThumbnailInfo high;
-  final ThumbnailInfo maxres;
+  final ThumbnailInfo? maxres;
   final ThumbnailInfo medium;
-  final ThumbnailInfo standard;
+  final ThumbnailInfo? standard;
 
 
   const Thumbnails ({
@@ -18,12 +18,13 @@ class Thumbnails {
   });
 
   factory Thumbnails.fromJson(Map<String, dynamic> json) {
+    
     return Thumbnails(
       default_: ThumbnailInfo.fromJson(json['default']),
       high: ThumbnailInfo.fromJson(json['high']),
-      maxres: ThumbnailInfo.fromJson(json['maxres']),
+      maxres: json['maxres'] != null ? ThumbnailInfo.fromJson(json['maxres']) : null,
       medium: ThumbnailInfo.fromJson(json['medium']),
-      standard: ThumbnailInfo.fromJson(json['standard']),
+      standard: json['standard'] != null ? ThumbnailInfo.fromJson(json['standard']) : null,
     );
   }
 }
