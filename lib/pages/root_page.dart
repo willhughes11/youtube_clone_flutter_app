@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/custom/material_colors.dart';
-import 'package:live_sync_flutter_app/home_page.dart';
+import 'package:live_sync_flutter_app/utils/colors.dart';
+import 'package:live_sync_flutter_app/pages/home_page.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
