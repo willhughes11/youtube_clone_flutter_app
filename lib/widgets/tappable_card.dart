@@ -27,7 +27,6 @@ class TappableCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle tap event here
         debugPrint(videoId);
       },
       child: Card(
