@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:live_sync_flutter_app/models/thumbnails.dart';
+import 'package:live_sync_flutter_app/models/common/thumbnails.dart';
 
 @JsonSerializable()
 class ChannelThumbnails {

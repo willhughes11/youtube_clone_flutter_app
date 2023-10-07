@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Localized {
-  final String description;
+  final String? description;
   final String title;
 
 

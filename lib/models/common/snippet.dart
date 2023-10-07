@@ -1,20 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:live_sync_flutter_app/models/localized.dart';
-import 'package:live_sync_flutter_app/models/thumbnails.dart';
+import 'package:live_sync_flutter_app/models/common/localized.dart';
+import 'package:live_sync_flutter_app/models/common/thumbnails.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Snippet {
-  final String categoryId;
+  final String? categoryId;
   final String channelId;
-  final String channelTitle;
+  final String? channelTitle;
   final String? defaultAudioLanguage;
   final String? defaultLanguage;
-  final String description;
-  final String liveBroadcastContent;
-  final String publishedAt;
+  final String? description;
+  final String? liveBroadcastContent;
+  final String? publishedAt;
   final String title;
-  final Localized loacalized;
-  final Thumbnails thumbnails;
+  final Localized? loacalized;
+  final Thumbnails? thumbnails;
+  final bool? assignable;
   
   const Snippet ({
     required this.categoryId,
@@ -27,7 +28,8 @@ class Snippet {
     required this.publishedAt,
     required this.title,
     required this.loacalized,
-    required this.thumbnails
+    required this.thumbnails,
+    required this.assignable,
   });
 
   factory Snippet.fromJson(Map<String, dynamic> json) {
@@ -41,8 +43,9 @@ class Snippet {
       liveBroadcastContent: json['liveBroadcastContent'],
       publishedAt: json['publishedAt'],
       title: json['title'],
-      loacalized: Localized.fromJson(json['localized']),
-      thumbnails: Thumbnails.fromJson(json['thumbnails'])
+      loacalized: json['localized'] != null ? Localized.fromJson(json['localized']) : null,
+      thumbnails: json['thumbnails'] != null ? Thumbnails.fromJson(json['thumbnails']) : null,
+      assignable: json['assignable']
     );
   }
 }
