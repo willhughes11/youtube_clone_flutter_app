@@ -4,41 +4,41 @@ import 'package:live_sync_flutter_app/utils/colors.dart';
 
 class MaterialVideoFilterButton extends StatelessWidget {
   final String baseUrl;
-  final String selectedVideoCategoryId;
-  final Item categoryItem;
-  final Function(String) updateSelectedVideoCategory;
+  final String selectedFilterId;
+  final Item filterItem;
+  final Function(String) updateSelectedFilterCategory;
   final Function(String, String) fetchAndSetPopularVideos;
 
   const MaterialVideoFilterButton(
       {super.key,
       required this.baseUrl,
-      required this.selectedVideoCategoryId,
-      required this.categoryItem,
-      required this.updateSelectedVideoCategory,
+      required this.selectedFilterId,
+      required this.filterItem,
+      required this.updateSelectedFilterCategory,
       required this.fetchAndSetPopularVideos});
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        debugPrint(categoryItem.id);
-        updateSelectedVideoCategory(categoryItem.id);
-        fetchAndSetPopularVideos(baseUrl, categoryItem.id);
+        debugPrint(filterItem.id);
+        updateSelectedFilterCategory(filterItem.id);
+        fetchAndSetPopularVideos(baseUrl, filterItem.id);
       },
       padding: const EdgeInsets.all(8.0),
       minWidth: 50,
       height: 0,
-      color: selectedVideoCategoryId == categoryItem.id
+      color: selectedFilterId == filterItem.id
           ? Colors.white
           : customBlack.shade600,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6.0),
       ),
       child: Text(
-        categoryItem.snippet!.title,
+        filterItem.snippet!.title,
         style: TextStyle(
           color:
-              selectedVideoCategoryId == categoryItem.id ? Colors.black : Colors.white,
+              selectedFilterId == filterItem.id ? Colors.black : Colors.white,
           fontSize: 12.0,
         ),
       ),

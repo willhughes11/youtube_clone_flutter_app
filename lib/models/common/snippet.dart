@@ -15,6 +15,7 @@ class Snippet {
   final String title;
   final Localized? loacalized;
   final Thumbnails? thumbnails;
+  final Thumbnails? channelThumbnails;
   final bool? assignable;
   
   const Snippet ({
@@ -29,6 +30,7 @@ class Snippet {
     required this.title,
     required this.loacalized,
     required this.thumbnails,
+    required this.channelThumbnails,
     required this.assignable,
   });
 
@@ -45,6 +47,7 @@ class Snippet {
       title: json['title'],
       loacalized: json['localized'] != null ? Localized.fromJson(json['localized']) : null,
       thumbnails: json['thumbnails'] != null ? Thumbnails.fromJson(json['thumbnails']) : null,
+      channelThumbnails: json['channelThumbnails'] != null ? Thumbnails.fromJson(json['channelThumbnails']) : null,
       assignable: json['assignable']
     );
   }

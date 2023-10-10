@@ -9,7 +9,7 @@ class TappableCard extends StatelessWidget {
   final String viewCount;
   final String publishedAt;
   final String videoId;
-  final String channelThumbnailUrl;
+  final String? channelThumbnailUrl;
   final String channelId;
 
   const TappableCard(
@@ -20,7 +20,7 @@ class TappableCard extends StatelessWidget {
       required this.viewCount,
       required this.publishedAt,
       required this.videoId,
-      required this.channelThumbnailUrl,
+      this.channelThumbnailUrl,
       required this.channelId});
 
   @override
@@ -41,7 +41,7 @@ class TappableCard extends StatelessWidget {
             ),
             ListTile(
               contentPadding: const EdgeInsets.all(8.0),
-              leading: Container(
+              leading: channelThumbnailUrl != null ? Container(
                 padding: const EdgeInsets.all(0.0),
                 child: GestureDetector(
                   onTap: () {
@@ -49,14 +49,14 @@ class TappableCard extends StatelessWidget {
                   },
                   child: ClipOval(
                     child: Image.network(
-                      channelThumbnailUrl,
+                      channelThumbnailUrl!,
                       width: 30,
                       height: 30,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ),
+              ) : null,
               title: Text(
                 title,
                 maxLines: 2,
@@ -109,9 +109,14 @@ class TappableCard extends StatelessWidget {
                       fontWeight: FontWeight.w600),
                 ),
               ]),
-              trailing: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
+              trailing: GestureDetector(
+                onTap: (){
+                  debugPrint("Video $videoId Options");
+                },
+                child: const Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                ),
               ),
               onTap: () {
                 debugPrint("Video $videoId");

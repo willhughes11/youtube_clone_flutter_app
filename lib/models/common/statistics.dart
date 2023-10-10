@@ -2,8 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Statistics {
-  final String commentCount;
-  final String likeCount;
+  final String? commentCount;
+  final String? likeCount;
   final String viewCount;
 
   const Statistics ({

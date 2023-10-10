@@ -4,12 +4,13 @@ import 'package:live_sync_flutter_app/models/video_categories.dart';
 import 'dart:convert';
 
 Future<PopularVideos> fetchPopularVideos(String baseUrl,
-    [String? videoCategoryId = '0']) async {
+    [String? videoCategoryId = '0', String? nextPageToken]) async {
   final parsedUrl = Uri.parse(baseUrl);
   final requestUrl = parsedUrl.replace(
     path: '/api/v1/videos/most-popular',
     queryParameters: {
-      "vcid": videoCategoryId
+      "vcid": videoCategoryId,
+      "npt": nextPageToken
     },
   );
 

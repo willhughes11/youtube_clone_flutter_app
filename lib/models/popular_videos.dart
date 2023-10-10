@@ -6,7 +6,8 @@ import 'package:live_sync_flutter_app/models/common/item.dart';
 class PopularVideos {
   final String etag;
   final String kind;
-  final String nextPageToken;
+  final String? nextPageToken;
+  final String? prevPageToken;
   final PageInfo? pageInfo;
   final List<Item> items;
 
@@ -14,6 +15,7 @@ class PopularVideos {
     required this.etag,
     required this.kind,
     required this.nextPageToken,
+    required this.prevPageToken,
     required this.pageInfo,
     required this.items
   });
@@ -25,6 +27,7 @@ class PopularVideos {
       etag: json['etag'],
       kind: json['kind'],
       nextPageToken: json['nextPageToken'],
+      prevPageToken: json['prevPageToken'],
       pageInfo: PageInfo.fromJson(json["pageInfo"]),
       items: itemList
     );
