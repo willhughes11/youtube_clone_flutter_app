@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:live_sync_flutter_app/api/videos.dart';
 import 'package:live_sync_flutter_app/models/video_categories.dart';
 import 'package:live_sync_flutter_app/utils/colors.dart';
 import 'package:live_sync_flutter_app/models/popular_videos.dart';
-import 'package:live_sync_flutter_app/widgets/tappable_card.dart';
-import 'package:live_sync_flutter_app/widgets/video_filter_bar.dart';
+import 'package:live_sync_flutter_app/widgets/video_category_app_bar.dart';
+import 'package:live_sync_flutter_app/widgets/video_sliver_list_view.dart';
+import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
 
 import 'dart:io';
-
-import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,11 +20,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String selectedVideCategoryId = "0";
   late Future<VideoCategories> futureVideoCategories;
-  late Future<PopularVideos>? futurePopularVideos;
+  late Future<PopularVideos> futurePopularVideos;
   late String baseUrl;
-  String? nextPageToken;
-  bool isLoading = false;
+  bool _isLoadingNewVideos = false;
+  bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
+  late PopularVideos data;
 
   @override
   void initState() {
@@ -37,10 +38,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     _scrollController.addListener(_reloadDataScrollListener);
-    _scrollController.addListener(_loadMoreDataScrollListener);
+    _scrollController.addListener(_onScroll);
 
-    futureVideoCategories = fetchVideoCategories(baseUrl);
-    futurePopularVideos = fetchPopularVideos(baseUrl);
+    fetchData();
   }
 
   @override
@@ -55,59 +55,78 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _reloadDataScrollListener() {
-    if (_scrollController.position.pixels == 0) {
-      // User scrolled to the top, trigger refresh
-      _handleRefresh();
-    }
-  }
-
-  void _loadMoreDataScrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      if (!isLoading) {
-        setState(() {
-          isLoading = true;
-        });
-        loadDataOnScroll(baseUrl, selectedVideCategoryId, nextPageToken);
-      }
-    }
-  }
-
-  Future<void> loadDataOnScroll(
-      String baseUrl, String categoryId, String? pageToken) async {
-    final newPopularVideos =
-        await fetchPopularVideos(baseUrl, categoryId, pageToken);
-    final popularVideos = await futurePopularVideos;
-    setState(() {
-      popularVideos!.items.addAll(newPopularVideos.items);
-      futurePopularVideos = Future.value(popularVideos);
-      nextPageToken = newPopularVideos.nextPageToken; // Update nextPageToken
-      isLoading = false; // Set isLoading to false
-    });
+  Future<void> fetchData() async {
+    futureVideoCategories = fetchVideoCategories(baseUrl);
+    futurePopularVideos = fetchPopularVideos(baseUrl);
+    data = await futurePopularVideos;
   }
 
   Future<void> fetchAndSetPopularVideos(String baseUrl, String categoryId,
       [String? pageToken]) async {
     try {
+      setState(() {
+        _isLoadingNewVideos = true;
+      });
+      await Future.delayed(const Duration(seconds: 1));
       final newPopularVideos =
           await fetchPopularVideos(baseUrl, categoryId, pageToken);
       setState(() {
-        futurePopularVideos = Future.value(newPopularVideos);
-        nextPageToken = newPopularVideos.nextPageToken;
+        data.updateFromApiData(newPopularVideos, true);
+        futurePopularVideos = Future.value(data);
+        _isLoadingNewVideos = false;
       });
     } catch (e) {
       debugPrint(e.toString());
+      setState(() {
+        _isLoadingNewVideos = false;
+      });
     }
   }
 
   Future<void> _handleRefresh() async {
+    await Future.delayed(const Duration(seconds: 1));
     // Perform your data fetching or reloading logic here
     final newPopularVideos =
         await fetchPopularVideos(baseUrl, selectedVideCategoryId);
     setState(() {
-      futurePopularVideos = Future.value(newPopularVideos);
-      nextPageToken = newPopularVideos.nextPageToken;
+      data.updateFromApiData(newPopularVideos, true);
+      futurePopularVideos = Future.value(data);
+    });
+  }
+
+  void _reloadDataScrollListener() {
+    if (_scrollController.position.pixels == 0) {
+      _handleRefresh();
+    }
+  }
+
+  void _onScroll() {
+    if (!_isLoading &&
+        _scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent) {
+      // User has scrolled to the end of the list, load more data.
+      _loadMoreData();
+    }
+  }
+
+  Future<void> _loadMoreData() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Fetch more data and append it to the 'data' list.
+    PopularVideos newData = await fetchPopularVideos(
+        baseUrl, selectedVideCategoryId, data.nextPageToken);
+    data.updateFromApiData(newData);
+
+    var fuPopVids = await futurePopularVideos;
+    debugPrint("FuPopVids: ${fuPopVids.items.length}");
+    debugPrint("Data: ${data.items.length}");
+
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -122,90 +141,58 @@ class _HomePageState extends State<HomePage> {
           color: Colors.grey,
           backgroundColor: Colors.transparent,
           child: Center(
-            child: FutureBuilder<VideoCategories>(
-              future: futureVideoCategories,
-              builder: (context, categorySnapshot) {
-                var categoryItems = categorySnapshot.data?.items ?? [];
-                return CustomScrollView(
-                  controller: _scrollController,
-                  slivers: <Widget>[
-                    SliverAppBar(
-                      backgroundColor: customBlack.shade800,
-                      floating: true,
-                      flexibleSpace: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: VideoFilterBar(
-                            selectedFilterId: selectedVideCategoryId,
-                            filterItems: categoryItems,
-                            baseUrl: baseUrl,
-                            updateSelectedFilterCategory:
-                                updateSelectedVideoCategory,
-                            fetchAndSetPopularVideos: fetchAndSetPopularVideos),
+              child: CustomScrollView(
+            controller: _scrollController,
+            slivers: <Widget>[
+              FutureBuilder<VideoCategories>(
+                future: futureVideoCategories,
+                builder: (context, categorySnapshot) {
+                  var categoryItems = categorySnapshot.data?.items ?? [];
+                  return VideoCategoryAppBar(
+                    baseUrl: baseUrl,
+                    selectedFilterId: selectedVideCategoryId,
+                    categoryItems: categoryItems,
+                    updateSelectedFilterCategory: updateSelectedVideoCategory,
+                    fetchAndSetPopularVideos: fetchAndSetPopularVideos,
+                  );
+                },
+              ),
+              FutureBuilder<PopularVideos>(
+                future: futurePopularVideos,
+                builder: (context, popularVideosSnapshot) {
+                  if (popularVideosSnapshot.connectionState ==
+                          ConnectionState.waiting ||
+                      _isLoadingNewVideos == true) {
+                    return const SliverToBoxAdapter(
+                      child: VideoLoadingSpinner(
+                        optionalColor: Colors.red,
                       ),
-                    ),
-                    FutureBuilder<PopularVideos>(
-                        future: futurePopularVideos,
-                        builder: (context, popularVideosSnapshot) {
-                          if (popularVideosSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const SliverToBoxAdapter(
-                              child: VideoLoadingSpinner(
-                                optionalColor: Colors.red,
-                              ),
-                            );
-                          } else if (popularVideosSnapshot.hasData) {
-                            final mostPopularVideos =
-                                popularVideosSnapshot.data;
-
-                            if (mostPopularVideos == null ||
-                                mostPopularVideos.items.isEmpty) {
-                              return const Text('No popular videos available');
-                            }
-
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                  final videoItem =
-                                      mostPopularVideos.items[index];
-                                  return TappableCard(
-                                    videoThumbnailUrl: videoItem
-                                            .snippet!.thumbnails?.maxres?.url ??
-                                        videoItem.snippet!.thumbnails!.high.url,
-                                    title: videoItem.snippet!.title,
-                                    channelTitle:
-                                        videoItem.snippet!.channelTitle!,
-                                    viewCount: videoItem.statistics!.viewCount,
-                                    publishedAt:
-                                        videoItem.snippet!.publishedAt!,
-                                    videoId: videoItem.id,
-                                    channelThumbnailUrl: videoItem
-                                        .snippet!.channelThumbnails?.high.url,
-                                    channelId: videoItem.snippet!.channelId,
-                                  );
-                                },
-                                childCount: mostPopularVideos.items.length,
-                              ),
-                            );
-                          } else if (popularVideosSnapshot.hasError) {
-                            return SliverToBoxAdapter(
-                              child: Center(
-                                child: Text(
-                                    'Error: ${popularVideosSnapshot.error}'),
-                              ),
-                            );
-                          } else {
-                            return const SliverToBoxAdapter(
-                              child: VideoLoadingSpinner(
-                                optionalColor: Colors.red,
-                              ),
-                            );
-                          }
-                        }),
-                  ],
-                );
-              },
-            ),
-          ),
+                    );
+                  } else if (popularVideosSnapshot.hasError) {
+                    return SliverToBoxAdapter(
+                      child: Text('Error: ${popularVideosSnapshot.error}'),
+                    );
+                  } else {
+                    return VideoSliverListView(
+                      data: popularVideosSnapshot.data,
+                    );
+                  }
+                },
+              ),
+              SliverToBoxAdapter(
+                child: _isLoading
+                    ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 64.0),
+                          child: VideoLoadingSpinner(
+                            optionalColor: Colors.red,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ),
+            ],
+          )),
         ),
       ),
     );
