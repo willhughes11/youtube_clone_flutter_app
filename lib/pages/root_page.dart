@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:live_sync_flutter_app/pages/library_page.dart';
+import 'package:live_sync_flutter_app/pages/shorts_page.dart';
+import 'package:live_sync_flutter_app/pages/subscriptions_page.dart';
 import 'package:live_sync_flutter_app/utils/colors.dart';
 import 'package:live_sync_flutter_app/pages/home_page.dart';
+
+typedef MyBuilder = void Function(
+    BuildContext context, void Function() methodA);
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -11,19 +17,36 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int currentPage = 0;
-  List<Widget> pages = const [];
+  List<Widget?> pages = [];
+  late void Function() parentScrollToTop;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      HomePage(
+        builder: (BuildContext context, void Function() childScrollToTop) {
+          parentScrollToTop = childScrollToTop;
+        },
+      ),
+      const ShortsPage(),
+      null,
+      const SubscriptionsPage(),
+      const LibraryPage(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: pages[currentPage],
-      body: const HomePage(),
+      body: pages[currentPage],
       appBar: AppBar(
         backgroundColor: customBlack.shade800,
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: (){},
+              onPressed: () {},
               icon: const Icon(Icons.slideshow),
             ),
             const Text('LiveSync'),
@@ -80,7 +103,11 @@ class _RootPageState extends State<RootPage> {
         currentIndex: currentPage,
         onTap: (int index) {
           setState(() {
-            currentPage = index;
+            if (index != 2 && index != currentPage) {
+              currentPage = index;
+            } else {
+              parentScrollToTop();
+            }
           });
         },
       ),

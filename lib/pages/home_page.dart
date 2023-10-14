@@ -1,7 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'package:live_sync_flutter_app/api/videos.dart';
 import 'package:live_sync_flutter_app/models/video_categories.dart';
+import 'package:live_sync_flutter_app/pages/root_page.dart';
 import 'package:live_sync_flutter_app/utils/colors.dart';
 import 'package:live_sync_flutter_app/models/popular_videos.dart';
 import 'package:live_sync_flutter_app/widgets/video_category_app_bar.dart';
@@ -11,7 +14,8 @@ import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
 import 'dart:io';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final MyBuilder builder;
+  const HomePage({super.key, required this.builder});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -67,7 +71,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _isLoadingNewVideos = true;
       });
-      await Future.delayed(const Duration(seconds: 1));
+      // await Future.delayed(const Duration(seconds: 1));
       final newPopularVideos =
           await fetchPopularVideos(baseUrl, categoryId, pageToken);
       setState(() {
@@ -84,7 +88,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _handleRefresh() async {
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     // Perform your data fetching or reloading logic here
     final newPopularVideos =
         await fetchPopularVideos(baseUrl, selectedVideCategoryId);
@@ -116,22 +120,29 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true;
     });
 
-    // Fetch more data and append it to the 'data' list.
     PopularVideos newData = await fetchPopularVideos(
         baseUrl, selectedVideCategoryId, data.nextPageToken);
     data.updateFromApiData(newData);
-
-    var fuPopVids = await futurePopularVideos;
-    debugPrint("FuPopVids: ${fuPopVids.items.length}");
-    debugPrint("Data: ${data.items.length}");
-
+    
     setState(() {
       _isLoading = false;
     });
   }
 
+  void scrollToTop() {
+    if (_scrollController.positions.isNotEmpty) {
+      _scrollController.animateTo(
+        1,
+        duration:
+            const Duration(milliseconds: 500), // Adjust the duration as needed
+        curve: Curves.easeInOut, // Choose an easing curve
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    widget.builder.call(context, scrollToTop);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -165,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                       _isLoadingNewVideos == true) {
                     return const SliverToBoxAdapter(
                       child: VideoLoadingSpinner(
-                        optionalColor: Colors.red,
+                        optionalColor: Colors.grey,
                       ),
                     );
                   } else if (popularVideosSnapshot.hasError) {
@@ -185,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 64.0),
                           child: VideoLoadingSpinner(
-                            optionalColor: Colors.red,
+                            optionalColor: Colors.grey,
                           ),
                         ),
                       )

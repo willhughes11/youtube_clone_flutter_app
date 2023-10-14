@@ -21,9 +21,16 @@ class MaterialVideoFilterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        debugPrint(filterItem.id);
-        updateSelectedFilterCategory(filterItem.id);
-        fetchAndSetPopularVideos(baseUrl, filterItem.id);
+        const defaultFilterId = "0";
+        if (selectedFilterId == filterItem.id) {
+          if (selectedFilterId != defaultFilterId) {
+            updateSelectedFilterCategory(defaultFilterId);
+            fetchAndSetPopularVideos(baseUrl, defaultFilterId);
+          }
+        } else {
+          updateSelectedFilterCategory(filterItem.id);
+          fetchAndSetPopularVideos(baseUrl, filterItem.id);
+        }
       },
       padding: const EdgeInsets.all(8.0),
       minWidth: 50,
