@@ -3,8 +3,8 @@ import 'package:youtube_clone_flutter_app/api/channels.dart';
 import 'package:youtube_clone_flutter_app/models/channel.dart';
 import 'package:youtube_clone_flutter_app/models/common/item.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/widgets/channel_info_header.dart';
-import 'package:youtube_clone_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_info_header.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 class ChannelPage extends StatefulWidget {
   final String baseUrl;
@@ -48,7 +48,7 @@ class _ChannelPageState extends State<ChannelPage> {
         if (channelSnapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             backgroundColor: customBlack.shade900,
-            body: const VideoLoadingSpinner(
+            body: const CustomLoadingSpinner(
               optionalColor: Colors.grey,
             ),
           );
@@ -108,30 +108,39 @@ class _ChannelPageState extends State<ChannelPage> {
                           border: Border(
                             bottom: BorderSide(
                               color: Colors.grey,
-                              width: 1.0,
+                              width: 1.5,
                             ),
                           ),
                         ),
                         child: DefaultTabController(
-                          length: channelContentOptions.length,
-                          animationDuration: Duration.zero,
-                          child: TabBar(
-                            isScrollable: true,
-                            indicatorColor: Colors.white,
-                            tabs: [
-                              for (var item in channelContentOptions)
-                                Tab(
-                                  text: item,
-                                )
-                            ],
-                          ),
-                        )),
+                            length: channelContentOptions.length,
+                            animationDuration: Duration.zero,
+                            child: Column(
+                              children: [
+                                TabBar(
+                                  isScrollable: true,
+                                  indicatorColor: Colors.white,
+                                  tabs: [
+                                    for (var item in channelContentOptions)
+                                      Tab(
+                                        text: item,
+                                      )
+                                  ],
+                                ),
+                                // TabBarView(children: [
+                                  
+                                // ])
+                              ],
+                            ))),
                   ),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         return ListTile(
-                          title: Text('Item $index', style: const TextStyle(color: Colors.white),),
+                          title: Text(
+                            'Item $index',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         );
                       },
                       childCount: 1000,

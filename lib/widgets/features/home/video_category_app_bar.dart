@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/models/common/item.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/widgets/video_filter_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/home/video_filter_bar.dart';
 
 class VideoCategoryAppBar extends StatelessWidget {
   final String baseUrl;

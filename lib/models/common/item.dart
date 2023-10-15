@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:youtube_clone_flutter_app/models/common/branding_settings.dart';
+import 'package:youtube_clone_flutter_app/models/channel/branding_settings.dart';
 import 'package:youtube_clone_flutter_app/models/common/content_details.dart';
 import 'package:youtube_clone_flutter_app/models/common/localizations.dart';
 import 'package:youtube_clone_flutter_app/models/common/snippet.dart';

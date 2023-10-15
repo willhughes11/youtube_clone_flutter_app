@@ -6,7 +6,8 @@ import 'dart:convert';
 Future<Channel> fetchChannelById(String baseUrl, String channelId) async {
   final parsedUrl = Uri.parse(baseUrl);
   final requestUrl = parsedUrl.replace(
-    path: '/api/v1/channels/$channelId',
+    path: '/api/v1/channels',
+    queryParameters: {"id": channelId},
   );
 
   final response = await http.get(Uri.parse(requestUrl.toString()));

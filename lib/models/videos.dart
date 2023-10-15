@@ -3,7 +3,7 @@ import 'package:youtube_clone_flutter_app/models/common/page_info.dart';
 import 'package:youtube_clone_flutter_app/models/common/item.dart';
 
 @JsonSerializable()
-class PopularVideos {
+class Videos {
   String etag;
   String kind;
   String? nextPageToken;
@@ -11,7 +11,7 @@ class PopularVideos {
   PageInfo? pageInfo;
   List<Item> items;
 
-  PopularVideos(
+  Videos(
       {required this.etag,
       required this.kind,
       required this.nextPageToken,
@@ -20,7 +20,7 @@ class PopularVideos {
       required this.items});
 
   // Method to update object properties from API data
-  void updateFromApiData(PopularVideos apiData, [bool? refreshData]) {
+  void updateFromApiData(Videos apiData, [bool? refreshData]) {
     etag = apiData.etag;
     kind = apiData.kind;
     nextPageToken = apiData.nextPageToken;
@@ -33,11 +33,11 @@ class PopularVideos {
     }
   }
 
-  factory PopularVideos.fromJson(Map<String, dynamic> json) {
+  factory Videos.fromJson(Map<String, dynamic> json) {
     var itemListFromJson = json['items'] as List;
     List<Item> itemList =
         itemListFromJson.map((i) => Item.fromJson(i)).toList();
-    return PopularVideos(
+    return Videos(
         etag: json['etag'],
         kind: json['kind'],
         nextPageToken: json['nextPageToken'],

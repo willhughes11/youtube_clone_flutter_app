@@ -1,15 +1,16 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:youtube_clone_flutter_app/api/video_categories.dart';
 
 import 'package:youtube_clone_flutter_app/api/videos.dart';
 import 'package:youtube_clone_flutter_app/models/video_categories.dart';
 import 'package:youtube_clone_flutter_app/pages/root_page.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/models/popular_videos.dart';
-import 'package:youtube_clone_flutter_app/widgets/video_category_app_bar.dart';
-import 'package:youtube_clone_flutter_app/widgets/video_sliver_list_view.dart';
-import 'package:youtube_clone_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/models/videos.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/home/video_category_app_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/home/video_sliver_list_view.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 import 'dart:io';
 
@@ -24,12 +25,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String selectedVideCategoryId = "0";
   late Future<VideoCategories> futureVideoCategories;
-  late Future<PopularVideos> futurePopularVideos;
+  late Future<Videos> futurePopularVideos;
   late String baseUrl;
   bool _isLoadingNewVideos = false;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
-  late PopularVideos data;
+  late Videos data;
 
   @override
   void initState() {
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true;
     });
 
-    PopularVideos newData = await fetchPopularVideos(
+    Videos newData = await fetchPopularVideos(
         baseUrl, selectedVideCategoryId, data.nextPageToken);
     data.updateFromApiData(newData);
 
@@ -152,7 +153,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: EdgeInsets.all(12.0),
+                margin: const EdgeInsets.all(12.0),
                 child: Image.asset('assets/images/youtube-logo-white-text.png', width: 100,),
               )
               
@@ -192,14 +193,14 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              FutureBuilder<PopularVideos>(
+              FutureBuilder<Videos>(
                 future: futurePopularVideos,
                 builder: (context, popularVideosSnapshot) {
                   if (popularVideosSnapshot.connectionState ==
                           ConnectionState.waiting ||
                       _isLoadingNewVideos == true) {
                     return const SliverToBoxAdapter(
-                      child: VideoLoadingSpinner(
+                      child: CustomLoadingSpinner(
                         optionalColor: Colors.grey,
                       ),
                     );
@@ -220,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                     ? const Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 64.0),
-                          child: VideoLoadingSpinner(
+                          child: CustomLoadingSpinner(
                             optionalColor: Colors.grey,
                           ),
                         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/models/common/item.dart';
-import 'package:youtube_clone_flutter_app/widgets/material_video_filter_button.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/material_video_filter_button.dart';
 
 class VideoFilterBar extends StatelessWidget {
   final String baseUrl;

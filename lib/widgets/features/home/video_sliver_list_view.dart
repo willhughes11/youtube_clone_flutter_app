@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone_flutter_app/models/popular_videos.dart';
-import 'package:youtube_clone_flutter_app/widgets/tappable_card.dart';
+import 'package:youtube_clone_flutter_app/models/videos.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/home/tappable_card.dart';
 
 class VideoSliverListView extends StatelessWidget {
   final String baseUrl;
-  final PopularVideos? data;
+  final Videos? data;
   const VideoSliverListView({super.key, required this.baseUrl, required this.data});
 
   @override

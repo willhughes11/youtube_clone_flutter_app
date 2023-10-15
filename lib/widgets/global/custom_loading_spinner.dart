@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class VideoLoadingSpinner extends StatelessWidget {
+class CustomLoadingSpinner extends StatelessWidget {
   final Color? optionalColor;
-  const VideoLoadingSpinner({super.key, this.optionalColor});
+  const CustomLoadingSpinner({super.key, this.optionalColor});
 
   @override
   Widget build(BuildContext context) {

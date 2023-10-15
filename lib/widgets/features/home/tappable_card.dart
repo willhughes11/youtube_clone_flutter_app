@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/pages/channel_page.dart';
 import 'package:youtube_clone_flutter_app/utils/functions.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 class TappableCard extends StatelessWidget {
   final String baseUrl;
@@ -49,7 +49,7 @@ class TappableCard extends StatelessWidget {
                     return child; // The image is loaded, display it.
                   } else {
                     return const Center(
-                      child: VideoLoadingSpinner(
+                      child: CustomLoadingSpinner(
                         optionalColor: Colors.grey,
                       ),
                     );
