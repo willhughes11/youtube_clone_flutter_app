@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/models/channel/models/channel_item.dart';
 import 'package:youtube_clone_flutter_app/utils/functions.dart';
 
 class ChannelInfoHeader extends StatelessWidget {
-  final Item channelItem;
+  final ChannelItem channelItem;
   const ChannelInfoHeader({super.key, required this.channelItem});
 
   @override
@@ -13,11 +13,11 @@ class ChannelInfoHeader extends StatelessWidget {
         children: [
           Container(
             constraints: const BoxConstraints(
-              maxHeight: 70.0, // Set the maximum height as needed
+              maxHeight: 80.0,
             ),
             child: ClipRRect(
               child: Image.network(
-                channelItem.brandingSettings!.image!.bannerExternalUrl,
+                channelItem.brandingSettings.image!.bannerExternalUrl,
                 width: double.infinity,
                 fit: BoxFit.cover,
                 height: double.infinity,
@@ -31,7 +31,7 @@ class ChannelInfoHeader extends StatelessWidget {
                 children: [
                   ClipOval(
                     child: Image.network(
-                      channelItem.snippet!.thumbnails!.high.url,
+                      channelItem.snippet.thumbnails.high.url,
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
@@ -40,7 +40,7 @@ class ChannelInfoHeader extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                     child: Text(
-                      channelItem.snippet!.title,
+                      channelItem.snippet.title,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -51,7 +51,7 @@ class ChannelInfoHeader extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
                     child: Text(
-                      channelItem.snippet!.customUrl!,
+                      channelItem.snippet.customUrl!,
                       style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
@@ -61,7 +61,7 @@ class ChannelInfoHeader extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
                     child: Text(
-                      "${formatNumber(channelItem.statistics!.subscriberCount!)} subscribers • ${formatNumber(channelItem.statistics!.videoCount!)} videos",
+                      "${formatNumber(channelItem.statistics.subscriberCount!)} subscribers • ${formatNumber(channelItem.statistics.videoCount!)} videos",
                       style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 12,
@@ -77,10 +77,13 @@ class ChannelInfoHeader extends StatelessWidget {
                         Container(
                           constraints: const BoxConstraints(maxWidth: 350),
                           child: Text(
-                            channelItem.snippet!.description!.trim(),
+                            channelItem.snippet.description?.split('\n')[0] ??
+                                'More about this channel',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: const TextStyle(color: Colors.grey),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 12),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         const Icon(

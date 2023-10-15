@@ -1,13 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:youtube_clone_flutter_app/models/channel/models/channel_item.dart';
 import 'package:youtube_clone_flutter_app/models/common/page_info.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
 
 @JsonSerializable()
 class Channel {
   String etag;
   String kind;
-  PageInfo? pageInfo;
-  List<Item> items;
+  PageInfo pageInfo;
+  List<ChannelItem> items;
 
   Channel(
       {required this.etag,
@@ -17,12 +17,13 @@ class Channel {
 
   factory Channel.fromJson(Map<String, dynamic> json) {
     var itemListFromJson = json['items'] as List;
-    List<Item> itemList =
-        itemListFromJson.map((i) => Item.fromJson(i)).toList();
+    List<ChannelItem> itemList =
+        itemListFromJson.map((i) => ChannelItem.fromJson(i)).toList();
     return Channel(
-        etag: json['etag'],
-        kind: json['kind'],
-        pageInfo: PageInfo.fromJson(json["pageInfo"]),
-        items: itemList);
+      etag: json['etag'],
+      kind: json['kind'],
+      pageInfo: PageInfo.fromJson(json["pageInfo"]),
+      items: itemList,
+    );
   }
 }

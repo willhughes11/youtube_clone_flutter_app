@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:youtube_clone_flutter_app/models/video_categories.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories/video_categories.dart';
 import 'dart:convert';
 
 Future<VideoCategories> fetchVideoCategories(String baseUrl) async {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories/models/video_category_item.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/home/video_filter_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/filter_bar.dart';
 
 class VideoCategoryAppBar extends StatelessWidget {
   final String baseUrl;
   final String selectedFilterId;
-  final List<Item> categoryItems;
+  final List<VideoCategoryItem> categoryItems;
   final Function(String) updateSelectedFilterCategory;
   final Function(String, String) fetchAndSetPopularVideos;
 

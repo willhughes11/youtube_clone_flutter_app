@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:youtube_clone_flutter_app/models/videos/models/video_item.dart';
 import 'package:youtube_clone_flutter_app/models/common/page_info.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
 
 @JsonSerializable()
 class Videos {
@@ -8,8 +8,8 @@ class Videos {
   String kind;
   String? nextPageToken;
   String? prevPageToken;
-  PageInfo? pageInfo;
-  List<Item> items;
+  PageInfo pageInfo;
+  List<VideoItem> items;
 
   Videos(
       {required this.etag,
@@ -35,14 +35,15 @@ class Videos {
 
   factory Videos.fromJson(Map<String, dynamic> json) {
     var itemListFromJson = json['items'] as List;
-    List<Item> itemList =
-        itemListFromJson.map((i) => Item.fromJson(i)).toList();
+    List<VideoItem> itemList =
+        itemListFromJson.map((i) => VideoItem.fromJson(i)).toList();
     return Videos(
-        etag: json['etag'],
-        kind: json['kind'],
-        nextPageToken: json['nextPageToken'],
-        prevPageToken: json['prevPageToken'],
-        pageInfo: PageInfo.fromJson(json["pageInfo"]),
-        items: itemList);
+      etag: json['etag'],
+      kind: json['kind'],
+      nextPageToken: json['nextPageToken'],
+      prevPageToken: json['prevPageToken'],
+      pageInfo: PageInfo.fromJson(json["pageInfo"]),
+      items: itemList,
+    );
   }
 }

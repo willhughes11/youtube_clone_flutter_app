@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories/models/video_category_item.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
 
 class MaterialVideoFilterButton extends StatelessWidget {
   final String baseUrl;
   final String selectedFilterId;
-  final Item filterItem;
+  final VideoCategoryItem filterItem;
   final Function(String) updateSelectedFilterCategory;
   final Function(String, String) fetchAndSetPopularVideos;
 
@@ -42,7 +42,7 @@ class MaterialVideoFilterButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(6.0),
       ),
       child: Text(
-        filterItem.snippet!.title,
+        filterItem.snippet.title,
         style: TextStyle(
           color:
               selectedFilterId == filterItem.id ? Colors.black : Colors.white,

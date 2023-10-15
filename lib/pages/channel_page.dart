@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/api/channels.dart';
-import 'package:youtube_clone_flutter_app/models/channel.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/models/channel/channel.dart';
+import 'package:youtube_clone_flutter_app/models/channel/models/channel_item.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_home_tab.dart';
 import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_info_header.dart';
 import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
@@ -21,16 +22,8 @@ class _ChannelPageState extends State<ChannelPage> {
   late String channelId;
   late Future<Channel> futureChannel;
   final int selectedFilterId = 0;
-  List<String> channelContentOptions = [
-    'Home',
-    'Videos',
-    'Shorts',
-    'Live',
-    'Playlist',
-    'Community',
-    'Channels',
-    'About'
-  ];
+  List<String> channelTabOptions = [];
+  List<Widget> channelTabViewOptions = [];
 
   @override
   void initState() {
@@ -38,6 +31,28 @@ class _ChannelPageState extends State<ChannelPage> {
     baseUrl = widget.baseUrl;
     channelId = widget.channelId;
     futureChannel = fetchChannelById(baseUrl, channelId);
+
+    channelTabOptions = [
+      'Home',
+      'Videos',
+      'Shorts',
+      'Live',
+      'Playlist',
+      'Community',
+      'Channels',
+      'About'
+    ];
+
+    channelTabViewOptions = [
+      ChannelHomeTab(
+        channelId: channelId,
+      ),
+      for (int i = 1; i < 8; i++)
+        const SizedBox(
+          width: 0.0,
+          height: 0.0,
+        ),
+    ];
   }
 
   @override
@@ -58,7 +73,7 @@ class _ChannelPageState extends State<ChannelPage> {
             body: Text('Error: ${channelSnapshot.error}'),
           );
         } else {
-          Item channelItem = channelSnapshot.data!.items[0];
+          ChannelItem channelItem = channelSnapshot.data!.items[0];
           return Scaffold(
             appBar: AppBar(
               backgroundColor: customBlack.shade900,
@@ -73,7 +88,7 @@ class _ChannelPageState extends State<ChannelPage> {
                     icon: const Icon(Icons.arrow_back_ios),
                   ),
                   Text(
-                    channelItem.snippet!.title,
+                    channelItem.snippet.title,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -92,8 +107,11 @@ class _ChannelPageState extends State<ChannelPage> {
               ],
             ),
             backgroundColor: customBlack.shade900,
-            body: Center(
-              child: CustomScrollView(
+            body: DefaultTabController(
+              length: channelTabOptions.length,
+              animationDuration: Duration.zero,
+              child: Center(
+                  child: CustomScrollView(
                 slivers: [
                   ChannelInfoHeader(
                     channelItem: channelItem,
@@ -104,50 +122,41 @@ class _ChannelPageState extends State<ChannelPage> {
                     floating: true,
                     toolbarHeight: 50,
                     flexibleSpace: Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey,
-                              width: 1.5,
-                            ),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey,
+                            width: 0.5,
                           ),
                         ),
-                        child: DefaultTabController(
-                            length: channelContentOptions.length,
-                            animationDuration: Duration.zero,
-                            child: Column(
-                              children: [
-                                TabBar(
-                                  isScrollable: true,
-                                  indicatorColor: Colors.white,
-                                  tabs: [
-                                    for (var item in channelContentOptions)
-                                      Tab(
-                                        text: item,
-                                      )
-                                  ],
-                                ),
-                                // TabBarView(children: [
-                                  
-                                // ])
-                              ],
-                            ))),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(
-                            'Item $index',
-                            style: const TextStyle(color: Colors.white),
+                      ),
+                      child: Column(
+                        children: [
+                          TabBar(
+                            isScrollable: true,
+                            indicatorColor: Colors.white,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            indicatorWeight: 2.75,
+                            tabs: [
+                              for (var item in channelTabOptions)
+                                Tab(
+                                  text: item,
+                                )
+                            ],
                           ),
-                        );
-                      },
-                      childCount: 1000,
+                        ],
+                      ),
                     ),
                   ),
+                  SliverFillRemaining(
+                    child: TabBarView(children: channelTabViewOptions),
+                  )
                 ],
-              ),
+              )),
             ),
           );
         }

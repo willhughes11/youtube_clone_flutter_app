@@ -3,11 +3,10 @@ import 'package:youtube_clone_flutter_app/models/channel/channel.dart';
 
 import 'dart:convert';
 
-Future<Channel> fetchChannelById(String baseUrl, String channelId) async {
+Future<Channel> fetchChannelSectionsByChannelId(String baseUrl, String channelId) async {
   final parsedUrl = Uri.parse(baseUrl);
   final requestUrl = parsedUrl.replace(
-    path: '/api/v1/channels',
-    queryParameters: {"id": channelId},
+    path: '/api/v1/channelSections/channel/$channelId'
   );
 
   final response = await http.get(Uri.parse(requestUrl.toString()));

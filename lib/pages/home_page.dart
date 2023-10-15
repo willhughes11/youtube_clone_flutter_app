@@ -1,15 +1,13 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/api/video_categories.dart';
 
 import 'package:youtube_clone_flutter_app/api/videos.dart';
-import 'package:youtube_clone_flutter_app/models/video_categories.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories/video_categories.dart';
 import 'package:youtube_clone_flutter_app/pages/root_page.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/models/videos.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/home/video_category_app_bar.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/home/video_sliver_list_view.dart';
+import 'package:youtube_clone_flutter_app/models/videos/videos.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/video_categories/video_category_app_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/video/video_sliver_list_view.dart';
 import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 import 'dart:io';

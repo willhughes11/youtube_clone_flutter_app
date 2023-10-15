@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone_flutter_app/models/common/item.dart';
-import 'package:youtube_clone_flutter_app/widgets/global/material_video_filter_button.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories/models/video_category_item.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/material_filter_button.dart';
 
 class VideoFilterBar extends StatelessWidget {
   final String baseUrl;
   final String selectedFilterId;
-  final List<Item> filterItems;
+  final List<VideoCategoryItem> filterItems;
   final Function(String) updateSelectedFilterCategory;
   final Function(String, String) fetchAndSetPopularVideos;
 
@@ -22,7 +22,7 @@ class VideoFilterBar extends StatelessWidget {
     return Row(
       children: [
         for (var item in filterItems)
-          if (item.snippet?.assignable != null)
+          if (item.snippet.assignable != null)
             SizedBox(
               child: Container(
                 constraints: const BoxConstraints(
@@ -32,11 +32,12 @@ class VideoFilterBar extends StatelessWidget {
                   horizontal: 4.0,
                 ),
                 child: MaterialVideoFilterButton(
-                    selectedFilterId: selectedFilterId,
-                    filterItem: item,
-                    baseUrl: baseUrl,
-                    updateSelectedFilterCategory: updateSelectedFilterCategory,
-                    fetchAndSetPopularVideos: fetchAndSetPopularVideos),
+                  selectedFilterId: selectedFilterId,
+                  filterItem: item,
+                  baseUrl: baseUrl,
+                  updateSelectedFilterCategory: updateSelectedFilterCategory,
+                  fetchAndSetPopularVideos: fetchAndSetPopularVideos,
+                ),
               ),
             ),
       ],

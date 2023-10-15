@@ -4,7 +4,7 @@ import 'package:youtube_clone_flutter_app/utils/functions.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
 import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
-class TappableCard extends StatelessWidget {
+class TappableVideoCard extends StatelessWidget {
   final String baseUrl;
   final String videoThumbnailUrl;
   final String title;
@@ -15,7 +15,7 @@ class TappableCard extends StatelessWidget {
   final String? channelThumbnailUrl;
   final String channelId;
 
-  const TappableCard(
+  const TappableVideoCard(
       {super.key,
       required this.baseUrl,
       required this.videoThumbnailUrl,
