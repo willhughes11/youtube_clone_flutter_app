@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:live_sync_flutter_app/pages/channel_page.dart';
 import 'package:live_sync_flutter_app/utils/functions.dart';
 import 'package:live_sync_flutter_app/utils/colors.dart';
 import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
 
 class TappableCard extends StatelessWidget {
+  final String baseUrl;
   final String videoThumbnailUrl;
   final String title;
   final String channelTitle;
@@ -15,6 +17,7 @@ class TappableCard extends StatelessWidget {
 
   const TappableCard(
       {super.key,
+      required this.baseUrl,
       required this.videoThumbnailUrl,
       required this.title,
       required this.channelTitle,
@@ -67,7 +70,13 @@ class TappableCard extends StatelessWidget {
                       padding: const EdgeInsets.all(0.0),
                       child: GestureDetector(
                         onTap: () {
-                          debugPrint("Channel $channelId");
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return ChannelPage(baseUrl: baseUrl, channelId: channelId,);
+                              },
+                            ),
+                          );
                         },
                         child: ClipOval(
                           child: Image.network(
@@ -94,41 +103,7 @@ class TappableCard extends StatelessWidget {
                 child: Wrap(
                   children: [
                     Text(
-                      channelTitle,
-                      style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                      child: const Text(
-                        '•',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 11.5,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '${formatNumber(viewCount)} views',
-                      style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                      child: const Text(
-                        '•',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 11.5,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      calculateRelativeTime(publishedAt),
+                      "$channelTitle • ${formatNumber(viewCount)} views • ${calculateRelativeTime(publishedAt)}",
                       style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 11.5,

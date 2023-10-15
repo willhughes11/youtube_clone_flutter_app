@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
     PopularVideos newData = await fetchPopularVideos(
         baseUrl, selectedVideCategoryId, data.nextPageToken);
     data.updateFromApiData(newData);
-    
+
     setState(() {
       _isLoading = false;
     });
@@ -146,6 +146,31 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: customBlack.shade800,
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.slideshow),
+              ),
+              const Text('LiveSync'),
+              const SizedBox(width: 2.0),
+            ],
+          ),
+          leadingWidth: 150,
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.account_circle),
+            )
+          ],
+        ),
         backgroundColor: customBlack.shade800,
         body: RefreshIndicator(
           onRefresh: _handleRefresh,
@@ -185,6 +210,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else {
                     return VideoSliverListView(
+                      baseUrl: baseUrl,
                       data: popularVideosSnapshot.data,
                     );
                   }

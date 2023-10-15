@@ -5,7 +5,7 @@ import 'package:live_sync_flutter_app/models/common/thumbnails.dart';
 @JsonSerializable(explicitToJson: true)
 class Snippet {
   final String? categoryId;
-  final String channelId;
+  final String? channelId;
   final String? channelTitle;
   final String? defaultAudioLanguage;
   final String? defaultLanguage;
@@ -17,6 +17,7 @@ class Snippet {
   final Thumbnails? thumbnails;
   final Thumbnails? channelThumbnails;
   final bool? assignable;
+  final String? customUrl;
   
   const Snippet ({
     required this.categoryId,
@@ -32,6 +33,7 @@ class Snippet {
     required this.thumbnails,
     required this.channelThumbnails,
     required this.assignable,
+    required this.customUrl,
   });
 
   factory Snippet.fromJson(Map<String, dynamic> json) {
@@ -48,7 +50,8 @@ class Snippet {
       loacalized: json['localized'] != null ? Localized.fromJson(json['localized']) : null,
       thumbnails: json['thumbnails'] != null ? Thumbnails.fromJson(json['thumbnails']) : null,
       channelThumbnails: json['channelThumbnails'] != null ? Thumbnails.fromJson(json['channelThumbnails']) : null,
-      assignable: json['assignable']
+      assignable: json['assignable'],
+      customUrl: json['customUrl'],
     );
   }
 }

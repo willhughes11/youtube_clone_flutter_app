@@ -22,27 +22,23 @@ class VideoFilterBar extends StatelessWidget {
     return Row(
       children: [
         for (var item in filterItems)
-        if (item.snippet?.assignable != null)
-          SizedBox(
-            child: Column(
-              children: [
-                Container(
-                  constraints: const BoxConstraints(
-                    minWidth: 0,
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 4.0,
-                  ),
-                  child: MaterialVideoFilterButton(
-                      selectedFilterId: selectedFilterId,
-                      filterItem: item,
-                      baseUrl: baseUrl,
-                      updateSelectedFilterCategory: updateSelectedFilterCategory,
-                      fetchAndSetPopularVideos: fetchAndSetPopularVideos),
+          if (item.snippet?.assignable != null)
+            SizedBox(
+              child: Container(
+                constraints: const BoxConstraints(
+                  minWidth: 0,
                 ),
-              ],
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 4.0,
+                ),
+                child: MaterialVideoFilterButton(
+                    selectedFilterId: selectedFilterId,
+                    filterItem: item,
+                    baseUrl: baseUrl,
+                    updateSelectedFilterCategory: updateSelectedFilterCategory,
+                    fetchAndSetPopularVideos: fetchAndSetPopularVideos),
+              ),
             ),
-          ),
       ],
     );
   }

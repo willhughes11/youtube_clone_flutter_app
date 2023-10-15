@@ -40,31 +40,6 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[currentPage],
-      appBar: AppBar(
-        backgroundColor: customBlack.shade800,
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.slideshow),
-            ),
-            const Text('LiveSync'),
-            const SizedBox(width: 2.0),
-          ],
-        ),
-        leadingWidth: 150,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.account_circle),
-          )
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
