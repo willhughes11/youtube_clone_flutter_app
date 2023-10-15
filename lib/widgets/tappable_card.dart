@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/pages/channel_page.dart';
-import 'package:live_sync_flutter_app/utils/functions.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/pages/channel_page.dart';
+import 'package:youtube_clone_flutter_app/utils/functions.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/widgets/video_loading_spinner.dart';
 
 class TappableCard extends StatelessWidget {
   final String baseUrl;
@@ -34,7 +34,7 @@ class TappableCard extends StatelessWidget {
         debugPrint(videoId);
       },
       child: Card(
-        color: customBlack.shade800,
+        color: customBlack.shade900,
         child: Column(
           children: [
             GestureDetector(

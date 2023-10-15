@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:live_sync_flutter_app/models/common/branding_image.dart';
-import 'package:live_sync_flutter_app/models/common/channel_info.dart';
+import 'package:youtube_clone_flutter_app/models/common/branding_image.dart';
+import 'package:youtube_clone_flutter_app/models/common/channel_info.dart';
 
 @JsonSerializable(explicitToJson: true)
 class BrandingSettings {

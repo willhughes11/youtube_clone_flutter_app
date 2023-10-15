@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:live_sync_flutter_app/models/common/localized.dart';
-import 'package:live_sync_flutter_app/models/common/thumbnails.dart';
+import 'package:youtube_clone_flutter_app/models/common/localized.dart';
+import 'package:youtube_clone_flutter_app/models/common/thumbnails.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Snippet {

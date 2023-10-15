@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/pages/library_page.dart';
-import 'package:live_sync_flutter_app/pages/shorts_page.dart';
-import 'package:live_sync_flutter_app/pages/subscriptions_page.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/pages/home_page.dart';
+import 'package:youtube_clone_flutter_app/pages/library_page.dart';
+import 'package:youtube_clone_flutter_app/pages/shorts_page.dart';
+import 'package:youtube_clone_flutter_app/pages/subscriptions_page.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/pages/home_page.dart';
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodA);
@@ -70,7 +70,7 @@ class _RootPageState extends State<RootPage> {
               label: 'Library'),
         ],
         type: BottomNavigationBarType.fixed,
-        backgroundColor: customBlack.shade800,
+        backgroundColor: customBlack.shade900,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         selectedLabelStyle: const TextStyle(fontSize: 12),

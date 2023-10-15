@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/api/channels.dart';
-import 'package:live_sync_flutter_app/models/channel.dart';
-import 'package:live_sync_flutter_app/models/common/item.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/widgets/channel_info_header.dart';
-import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/api/channels.dart';
+import 'package:youtube_clone_flutter_app/models/channel.dart';
+import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/widgets/channel_info_header.dart';
+import 'package:youtube_clone_flutter_app/widgets/video_loading_spinner.dart';
 
 class ChannelPage extends StatefulWidget {
   final String baseUrl;
@@ -47,21 +47,21 @@ class _ChannelPageState extends State<ChannelPage> {
       builder: (context, channelSnapshot) {
         if (channelSnapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            backgroundColor: customBlack.shade800,
+            backgroundColor: customBlack.shade900,
             body: const VideoLoadingSpinner(
               optionalColor: Colors.grey,
             ),
           );
         } else if (channelSnapshot.hasError) {
           return Scaffold(
-            backgroundColor: customBlack.shade800,
+            backgroundColor: customBlack.shade900,
             body: Text('Error: ${channelSnapshot.error}'),
           );
         } else {
           Item channelItem = channelSnapshot.data!.items[0];
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: customBlack.shade800,
+              backgroundColor: customBlack.shade900,
               automaticallyImplyLeading: false,
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -91,7 +91,7 @@ class _ChannelPageState extends State<ChannelPage> {
                 )
               ],
             ),
-            backgroundColor: customBlack.shade800,
+            backgroundColor: customBlack.shade900,
             body: Center(
               child: CustomScrollView(
                 slivers: [
@@ -99,7 +99,7 @@ class _ChannelPageState extends State<ChannelPage> {
                     channelItem: channelItem,
                   ),
                   SliverAppBar(
-                    backgroundColor: customBlack.shade800,
+                    backgroundColor: customBlack.shade900,
                     automaticallyImplyLeading: false,
                     floating: true,
                     toolbarHeight: 50,

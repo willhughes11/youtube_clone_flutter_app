@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/models/common/item.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/widgets/video_filter_bar.dart';
+import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/widgets/video_filter_bar.dart';
 
 class VideoCategoryAppBar extends StatelessWidget {
   final String baseUrl;
@@ -21,7 +21,7 @@ class VideoCategoryAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: customBlack.shade800,
+      backgroundColor: customBlack.shade900,
       floating: true,
       flexibleSpace: SingleChildScrollView(
         scrollDirection: Axis.horizontal,

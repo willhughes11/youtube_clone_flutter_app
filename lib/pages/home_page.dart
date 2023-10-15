@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:live_sync_flutter_app/api/videos.dart';
-import 'package:live_sync_flutter_app/models/video_categories.dart';
-import 'package:live_sync_flutter_app/pages/root_page.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/models/popular_videos.dart';
-import 'package:live_sync_flutter_app/widgets/video_category_app_bar.dart';
-import 'package:live_sync_flutter_app/widgets/video_sliver_list_view.dart';
-import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/api/videos.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories.dart';
+import 'package:youtube_clone_flutter_app/pages/root_page.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/models/popular_videos.dart';
+import 'package:youtube_clone_flutter_app/widgets/video_category_app_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/video_sliver_list_view.dart';
+import 'package:youtube_clone_flutter_app/widgets/video_loading_spinner.dart';
 
 import 'dart:io';
 
@@ -147,19 +147,18 @@ class _HomePageState extends State<HomePage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: customBlack.shade800,
+          backgroundColor: customBlack.shade900,
           leading: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.slideshow),
-              ),
-              const Text('LiveSync'),
-              const SizedBox(width: 2.0),
+              Container(
+                margin: EdgeInsets.all(12.0),
+                child: Image.asset('assets/images/youtube-logo-white-text.png', width: 100,),
+              )
+              
             ],
           ),
-          leadingWidth: 150,
+          leadingWidth: 200,
           actions: <Widget>[
             IconButton(
               onPressed: () {},
@@ -171,7 +170,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        backgroundColor: customBlack.shade800,
+        backgroundColor: customBlack.shade900,
         body: RefreshIndicator(
           onRefresh: _handleRefresh,
           color: Colors.grey,

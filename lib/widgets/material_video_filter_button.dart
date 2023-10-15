@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/models/common/item.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
 
 class MaterialVideoFilterButton extends StatelessWidget {
   final String baseUrl;
@@ -37,7 +37,7 @@ class MaterialVideoFilterButton extends StatelessWidget {
       height: 0,
       color: selectedFilterId == filterItem.id
           ? Colors.white
-          : customBlack.shade600,
+          : customBlack.shade700,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6.0),
       ),

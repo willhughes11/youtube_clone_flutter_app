@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
-import 'package:live_sync_flutter_app/models/popular_videos.dart';
-import 'package:live_sync_flutter_app/models/video_categories.dart';
+import 'package:youtube_clone_flutter_app/models/popular_videos.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories.dart';
 import 'dart:convert';
 
 Future<PopularVideos> fetchPopularVideos(String baseUrl,

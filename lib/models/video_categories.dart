@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:live_sync_flutter_app/models/common/item.dart';
+import 'package:youtube_clone_flutter_app/models/common/item.dart';
 
 @JsonSerializable()
 class VideoCategories {

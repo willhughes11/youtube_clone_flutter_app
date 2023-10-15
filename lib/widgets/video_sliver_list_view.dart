@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/models/popular_videos.dart';
-import 'package:live_sync_flutter_app/widgets/tappable_card.dart';
+import 'package:youtube_clone_flutter_app/models/popular_videos.dart';
+import 'package:youtube_clone_flutter_app/widgets/tappable_card.dart';
 
 class VideoSliverListView extends StatelessWidget {
   final String baseUrl;

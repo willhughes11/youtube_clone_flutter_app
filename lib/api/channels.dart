@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:live_sync_flutter_app/models/channel.dart';
+import 'package:youtube_clone_flutter_app/models/channel.dart';
 
 import 'dart:convert';
 
