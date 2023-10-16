@@ -8,16 +8,19 @@ class Videos {
   String kind;
   String? nextPageToken;
   String? prevPageToken;
+  String? regionCode;
   PageInfo pageInfo;
   List<VideoItem> items;
 
-  Videos(
-      {required this.etag,
-      required this.kind,
-      required this.nextPageToken,
-      required this.prevPageToken,
-      required this.pageInfo,
-      required this.items});
+  Videos({
+    required this.etag,
+    required this.kind,
+    required this.nextPageToken,
+    required this.prevPageToken,
+    required this.pageInfo,
+    required this.items,
+    required this.regionCode,
+  });
 
   // Method to update object properties from API data
   void updateFromApiData(Videos apiData, [bool? refreshData]) {
@@ -42,6 +45,7 @@ class Videos {
       kind: json['kind'],
       nextPageToken: json['nextPageToken'],
       prevPageToken: json['prevPageToken'],
+      regionCode: json['regionCode'],
       pageInfo: PageInfo.fromJson(json["pageInfo"]),
       items: itemList,
     );
