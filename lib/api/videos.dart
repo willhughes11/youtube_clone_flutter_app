@@ -8,8 +8,8 @@ Future<Videos> fetchPopularVideos(String baseUrl,
   final requestUrl = parsedUrl.replace(
     path: '/api/v1/videos/mostPopular',
     queryParameters: {
-      "vcid": videoCategoryId,
-      "npt": nextPageToken
+      'vcid': videoCategoryId,
+      'npt': nextPageToken
     },
   );
 
@@ -19,5 +19,25 @@ Future<Videos> fetchPopularVideos(String baseUrl,
     return Videos.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to load popular videos');
+  }
+}
+
+Future<Videos> fetchVideosByChannelId(String baseUrl, String channelId,
+    [String? order, String? nextPageToken]) async {
+  final parsedUrl = Uri.parse(baseUrl);
+  final requestUrl = parsedUrl.replace(
+    path: '/api/v1/videos/channel/$channelId',
+    queryParameters: {
+      'order': order,
+      'npt': nextPageToken
+    },
+  );
+
+  final response = await http.get(Uri.parse(requestUrl.toString()));
+
+  if (response.statusCode == 200) {
+    return Videos.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load channel videos');
   }
 }

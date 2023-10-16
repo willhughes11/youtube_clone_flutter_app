@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_clone_flutter_app/api/channel_sections.dart';
 import 'package:youtube_clone_flutter_app/api/channels.dart';
 import 'package:youtube_clone_flutter_app/models/channel/channel.dart';
 import 'package:youtube_clone_flutter_app/models/channel/models/channel_item.dart';
+import 'package:youtube_clone_flutter_app/models/channel_sections/channel_sections.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
 import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_home_tab.dart';
 import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_info_header.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_tab_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_videos.tab.dart';
 import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 class ChannelPage extends StatefulWidget {
@@ -21,6 +25,7 @@ class _ChannelPageState extends State<ChannelPage> {
   late String baseUrl;
   late String channelId;
   late Future<Channel> futureChannel;
+  late Future<ChannelSections> futureChannelSection;
   final int selectedFilterId = 0;
   List<String> channelTabOptions = [];
   List<Widget> channelTabViewOptions = [];
@@ -31,6 +36,7 @@ class _ChannelPageState extends State<ChannelPage> {
     baseUrl = widget.baseUrl;
     channelId = widget.channelId;
     futureChannel = fetchChannelById(baseUrl, channelId);
+    futureChannelSection = fetchChannelSectionsByChannelId(baseUrl, channelId);
 
     channelTabOptions = [
       'Home',
@@ -40,18 +46,7 @@ class _ChannelPageState extends State<ChannelPage> {
       'Playlist',
       'Community',
       'Channels',
-      'About'
-    ];
-
-    channelTabViewOptions = [
-      ChannelHomeTab(
-        channelId: channelId,
-      ),
-      for (int i = 1; i < 8; i++)
-        const SizedBox(
-          width: 0.0,
-          height: 0.0,
-        ),
+      'About',
     ];
   }
 
@@ -107,56 +102,71 @@ class _ChannelPageState extends State<ChannelPage> {
               ],
             ),
             backgroundColor: customBlack.shade900,
-            body: DefaultTabController(
-              length: channelTabOptions.length,
-              animationDuration: Duration.zero,
-              child: Center(
-                  child: CustomScrollView(
-                slivers: [
-                  ChannelInfoHeader(
-                    channelItem: channelItem,
-                  ),
-                  SliverAppBar(
+            body: FutureBuilder<ChannelSections>(
+              future: futureChannelSection,
+              builder: (context, channelSectionSnapshot) {
+                if (channelSectionSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Scaffold(
                     backgroundColor: customBlack.shade900,
-                    automaticallyImplyLeading: false,
-                    floating: true,
-                    toolbarHeight: 50,
-                    flexibleSpace: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey,
-                            width: 0.5,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          TabBar(
-                            isScrollable: true,
-                            indicatorColor: Colors.white,
-                            indicatorSize: TabBarIndicatorSize.label,
-                            labelStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            indicatorWeight: 2.75,
-                            tabs: [
-                              for (var item in channelTabOptions)
-                                Tab(
-                                  text: item,
-                                )
-                            ],
-                          ),
-                        ],
-                      ),
+                    body: const CustomLoadingSpinner(
+                      optionalColor: Colors.grey,
                     ),
-                  ),
-                  SliverFillRemaining(
-                    child: TabBarView(children: channelTabViewOptions),
-                  )
-                ],
-              )),
+                  );
+                } else if (channelSectionSnapshot.hasError) {
+                  return Scaffold(
+                    backgroundColor: customBlack.shade900,
+                    body: Text('Error: ${channelSectionSnapshot.error}'),
+                  );
+                } else {
+                  var channelSectionItems = channelSectionSnapshot.data!.items;
+                  return DefaultTabController(
+                    length: channelTabOptions.length,
+                    animationDuration: Duration.zero,
+                    child: Center(
+                        child: CustomScrollView(
+                      slivers: [
+                        ChannelInfoHeader(
+                          channelItem: channelItem,
+                        ),
+                        SliverAppBar(
+                          backgroundColor: customBlack.shade900,
+                          automaticallyImplyLeading: false,
+                          floating: true,
+                          toolbarHeight: 50,
+                          flexibleSpace: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.5,
+                                  ),
+                                ),
+                              ),
+                              child: ChannelTabBar(
+                                channelTabOptions: channelTabOptions,
+                              )),
+                        ),
+                        SliverFillRemaining(
+                          child: TabBarView(
+                              children: channelTabViewOptions = [
+                            ChannelHomeTab(
+                              channelId: channelId,
+                              channelSectionItems: channelSectionItems
+                            ),
+                            ChannelVideosTab(channelId: channelId,),
+                            for (int i = 1; i < 7; i++)
+                              const SizedBox(
+                                width: 0.0,
+                                height: 0.0,
+                              ),
+                          ]),
+                        )
+                      ],
+                    )),
+                  );
+                }
+              },
             ),
           );
         }

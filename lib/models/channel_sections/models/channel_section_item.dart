@@ -8,7 +8,7 @@ class ChannelSectionItem {
   final String kind;
   final ChannelSectionSnippet snippet;
 
-  const ChannelSectionItem ({
+  const ChannelSectionItem({
     required this.etag,
     required this.id,
     required this.kind,
@@ -17,10 +17,9 @@ class ChannelSectionItem {
 
   factory ChannelSectionItem.fromJson(Map<String, dynamic> json) {
     return ChannelSectionItem(
-      etag: json['etag'],
-      id: json['id'],
-      kind: json['kind'],
-      snippet: json['snippet'],
-    );
+        etag: json['etag'],
+        id: json['id'],
+        kind: json['kind'],
+        snippet: ChannelSectionSnippet.fromJson(json['snippet']));
   }
 }

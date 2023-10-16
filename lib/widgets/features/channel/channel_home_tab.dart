@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_clone_flutter_app/models/channel_sections/models/channel_section_item.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
 
-class ChannelHomeTab extends StatefulWidget {
+class ChannelHomeTab extends StatelessWidget {
   final String channelId;
-  const ChannelHomeTab({super.key, required this.channelId});
+  final List<ChannelSectionItem> channelSectionItems;
+  const ChannelHomeTab(
+      {super.key, required this.channelId, required this.channelSectionItems});
 
-  @override
-  State<ChannelHomeTab> createState() => _ChannelHomeTabState();
-}
-
-class _ChannelHomeTabState extends State<ChannelHomeTab> {
-  @override
-  void initState() {
-    super.initState();
-  }
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(color: customBlack.shade900),
+      body: Container(
+        color: customBlack.shade900,
+        child: Center(
+          child: Column(
+            children: [
+              for (var item in channelSectionItems)
+                Text(
+                  item.snippet.type,
+                  style: TextStyle(color: Colors.white),
+                )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
