@@ -9,7 +9,7 @@ class VideoSnippet {
   final String channelTitle;
   final String? defaultAudioLanguage;
   final String? defaultLanguage;
-  final String description;
+  final String? description;
   final String liveBroadcastContent;
   final String publishedAt;
   final String title;

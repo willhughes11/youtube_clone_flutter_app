@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/api/channel_sections.dart';
 import 'package:youtube_clone_flutter_app/api/channels.dart';
+import 'package:youtube_clone_flutter_app/api/videos.dart';
 import 'package:youtube_clone_flutter_app/models/channel/channel.dart';
 import 'package:youtube_clone_flutter_app/models/channel/models/channel_item.dart';
 import 'package:youtube_clone_flutter_app/models/channel_sections/channel_sections.dart';
+import 'package:youtube_clone_flutter_app/models/videos/videos.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_home_tab.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_home_tab_view.dart';
 import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_info_header.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_tab_bar.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_videos.tab.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_tab_options_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channel/channel_videos_tab_view.dart';
 import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 class ChannelPage extends StatefulWidget {
@@ -26,9 +28,12 @@ class _ChannelPageState extends State<ChannelPage> {
   late String channelId;
   late Future<Channel> futureChannel;
   late Future<ChannelSections> futureChannelSection;
-  final int selectedFilterId = 0;
+  late Future<Videos> futureVideosByChannelId;
+  int selectedChannelVideosOrderIndex = 0;
   List<String> channelTabOptions = [];
   List<Widget> channelTabViewOptions = [];
+  List<String> channelVideoOrderOptions = [];
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -37,6 +42,7 @@ class _ChannelPageState extends State<ChannelPage> {
     channelId = widget.channelId;
     futureChannel = fetchChannelById(baseUrl, channelId);
     futureChannelSection = fetchChannelSectionsByChannelId(baseUrl, channelId);
+    futureVideosByChannelId = fetchVideosByChannelId(baseUrl, channelId);
 
     channelTabOptions = [
       'Home',
@@ -48,6 +54,43 @@ class _ChannelPageState extends State<ChannelPage> {
       'Channels',
       'About',
     ];
+
+    channelVideoOrderOptions = ['Latest', 'Popular'];
+  }
+
+  void updateSelectedVideoChannelOrder(int updatedIndex) {
+    setState(() {
+      selectedChannelVideosOrderIndex = updatedIndex;
+    });
+  }
+
+    Future<void> fetchChannelVideosAndUpdateState(int selectedOrderIndex,
+      [String? pageToken]) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      String order;
+      if (selectedOrderIndex == 0) {
+        order = "date";
+      } else {
+        order = "viewCount";
+      }
+
+      final channelVideos =
+          await fetchVideosByChannelId(baseUrl, channelId, order);
+      setState(() {
+        // data.updateFromApiData(newPopularVideos, true);
+        futureVideosByChannelId = Future.value(channelVideos);
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -129,32 +172,24 @@ class _ChannelPageState extends State<ChannelPage> {
                         ChannelInfoHeader(
                           channelItem: channelItem,
                         ),
-                        SliverAppBar(
-                          backgroundColor: customBlack.shade900,
-                          automaticallyImplyLeading: false,
-                          floating: true,
-                          toolbarHeight: 50,
-                          flexibleSpace: Container(
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.5,
-                                  ),
-                                ),
-                              ),
-                              child: ChannelTabBar(
-                                channelTabOptions: channelTabOptions,
-                              )),
+                        ChannelTabOptionsBar(
+                          channelTabOptions: channelTabOptions,
                         ),
                         SliverFillRemaining(
                           child: TabBarView(
                               children: channelTabViewOptions = [
-                            ChannelHomeTab(
+                            ChannelHomeTabView(
+                                channelId: channelId,
+                                channelSectionItems: channelSectionItems),
+                            ChannelVideosTabView(
                               channelId: channelId,
-                              channelSectionItems: channelSectionItems
+                              selectedOrderIndex: selectedChannelVideosOrderIndex,
+                              videoOrderOptions: channelVideoOrderOptions,
+                              updateSelectedVideoChannelOrder: updateSelectedVideoChannelOrder,
+                              futureVideosByChannelId: futureVideosByChannelId,
+                              fetchChannelVideosAndUpdateState: fetchChannelVideosAndUpdateState,
+                              isLoading: isLoading
                             ),
-                            ChannelVideosTab(channelId: channelId,),
                             for (int i = 1; i < 7; i++)
                               const SizedBox(
                                 width: 0.0,

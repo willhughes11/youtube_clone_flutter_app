@@ -28,7 +28,7 @@ Future<Videos> fetchVideosByChannelId(String baseUrl, String channelId,
   final requestUrl = parsedUrl.replace(
     path: '/api/v1/videos/channel/$channelId',
     queryParameters: {
-      'order': order,
+      'order': order ?? "date",
       'npt': nextPageToken
     },
   );
