@@ -12,6 +12,8 @@ import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.
 
 import 'dart:io';
 
+import 'package:youtube_clone_flutter_app/widgets/global/home_app_bar.dart';
+
 class HomePage extends StatefulWidget {
   final MyBuilder builder;
   const HomePage({super.key, required this.builder});
@@ -70,7 +72,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _isLoadingNewVideos = true;
       });
-      // await Future.delayed(const Duration(seconds: 1));
       final newPopularVideos =
           await fetchPopularVideos(baseUrl, categoryId, pageToken);
       setState(() {
@@ -87,8 +88,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _handleRefresh() async {
-    // await Future.delayed(const Duration(seconds: 1));
-    // Perform your data fetching or reloading logic here
     final newPopularVideos =
         await fetchPopularVideos(baseUrl, selectedVideCategoryId);
     setState(() {
@@ -107,7 +106,6 @@ class _HomePageState extends State<HomePage> {
     if (!_isLoading &&
         _scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent) {
-      // User has scrolled to the end of the list, load more data.
       _loadMoreData();
     }
   }
@@ -132,9 +130,8 @@ class _HomePageState extends State<HomePage> {
     if (_scrollController.positions.isNotEmpty) {
       _scrollController.animateTo(
         1,
-        duration:
-            const Duration(milliseconds: 500), // Adjust the duration as needed
-        curve: Curves.easeInOut, // Choose an easing curve
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
       );
     }
   }
@@ -145,30 +142,7 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: customBlack.shade900,
-          leading: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(12.0),
-                child: Image.asset('assets/images/youtube-logo-white-text.png', width: 100,),
-              )
-              
-            ],
-          ),
-          leadingWidth: 200,
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.search),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.account_circle),
-            )
-          ],
-        ),
+        appBar: const HomeAppBar(),
         backgroundColor: customBlack.shade900,
         body: RefreshIndicator(
           onRefresh: _handleRefresh,
@@ -194,8 +168,8 @@ class _HomePageState extends State<HomePage> {
               FutureBuilder<Videos>(
                 future: futurePopularVideos,
                 builder: (context, popularVideosSnapshot) {
-                  if (popularVideosSnapshot.connectionState ==
-                          ConnectionState.waiting ||
+                  var connectionState = popularVideosSnapshot.connectionState;
+                  if (connectionState == ConnectionState.waiting ||
                       _isLoadingNewVideos == true) {
                     return const SliverToBoxAdapter(
                       child: CustomLoadingSpinner(
@@ -210,6 +184,8 @@ class _HomePageState extends State<HomePage> {
                     return VideoSliverListView(
                       baseUrl: baseUrl,
                       data: popularVideosSnapshot.data,
+                      isLoading: _isLoading,
+                      connectionState: connectionState,
                     );
                   }
                 },

@@ -21,6 +21,17 @@ class VideoFilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        SizedBox(
+          child: Container(
+            constraints: const BoxConstraints(
+              minWidth: 0,
+            ),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 4.0,
+            ),
+            child: const MaterialVideoFilterButton(),
+          ),
+        ),
         for (var item in filterItems)
           if (item.snippet.assignable != null)
             SizedBox(
