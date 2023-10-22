@@ -29,7 +29,8 @@ Future<Videos> fetchVideosByChannelId(String baseUrl, String channelId,
     path: '/api/v1/videos/channel/$channelId',
     queryParameters: {
       'order': order ?? "date",
-      'npt': nextPageToken
+      'npt': nextPageToken,
+      'gfd': "true"
     },
   );
 

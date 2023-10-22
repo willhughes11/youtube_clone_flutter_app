@@ -64,7 +64,7 @@ class _ChannelPageState extends State<ChannelPage> {
     });
   }
 
-    Future<void> fetchChannelVideosAndUpdateState(int selectedOrderIndex,
+  Future<void> fetchChannelVideosAndUpdateState(int selectedOrderIndex,
       [String? pageToken]) async {
     try {
       setState(() {
@@ -167,38 +167,41 @@ class _ChannelPageState extends State<ChannelPage> {
                     length: channelTabOptions.length,
                     animationDuration: Duration.zero,
                     child: Center(
-                        child: CustomScrollView(
-                      slivers: [
-                        ChannelInfoHeader(
-                          channelItem: channelItem,
-                        ),
-                        ChannelTabOptionsBar(
-                          channelTabOptions: channelTabOptions,
-                        ),
-                        SliverFillRemaining(
-                          child: TabBarView(
-                              children: channelTabViewOptions = [
-                            ChannelHomeTabView(
-                                channelId: channelId,
-                                channelSectionItems: channelSectionItems),
-                            ChannelVideosTabView(
-                              channelId: channelId,
-                              selectedOrderIndex: selectedChannelVideosOrderIndex,
-                              videoOrderOptions: channelVideoOrderOptions,
-                              updateSelectedVideoChannelOrder: updateSelectedVideoChannelOrder,
-                              futureVideosByChannelId: futureVideosByChannelId,
-                              fetchChannelVideosAndUpdateState: fetchChannelVideosAndUpdateState,
-                              isLoading: isLoading
+                      child: NestedScrollView(
+                        headerSliverBuilder: (context, innerBoxIsScrolled) {
+                          return [
+                            ChannelInfoHeader(
+                              channelItem: channelItem,
                             ),
-                            for (int i = 1; i < 7; i++)
-                              const SizedBox(
-                                width: 0.0,
-                                height: 0.0,
-                              ),
-                          ]),
-                        )
-                      ],
-                    )),
+                            ChannelTabOptionsBar(
+                              channelTabOptions: channelTabOptions,
+                            ),
+                          ];
+                        },
+                        body: TabBarView(
+                            children: channelTabViewOptions = [
+                          ChannelHomeTabView(
+                              channelId: channelId,
+                              channelSectionItems: channelSectionItems),
+                          ChannelVideosTabView(
+                              channelId: channelId,
+                              selectedOrderIndex:
+                                  selectedChannelVideosOrderIndex,
+                              videoOrderOptions: channelVideoOrderOptions,
+                              updateSelectedVideoChannelOrder:
+                                  updateSelectedVideoChannelOrder,
+                              futureVideosByChannelId: futureVideosByChannelId,
+                              fetchChannelVideosAndUpdateState:
+                                  fetchChannelVideosAndUpdateState,
+                              isLoading: isLoading),
+                          for (int i = 1; i < 7; i++)
+                            const SizedBox(
+                              width: 0.0,
+                              height: 0.0,
+                            ),
+                        ]),
+                      ),
+                    ),
                   );
                 }
               },

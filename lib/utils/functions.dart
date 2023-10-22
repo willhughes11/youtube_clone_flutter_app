@@ -1,4 +1,5 @@
-import 'package:get_time_ago/get_time_ago.dart';
+import 'package:timeago/timeago.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 String formatNumber(String numberString) {
   // Parse the string to an integer
@@ -6,54 +7,62 @@ String formatNumber(String numberString) {
 
   if (number >= 1000000000) {
     double result = number / 1000000000;
-    return '${result.toStringAsFixed(1)}B';
+    return '${removeTrailingZero(result.toStringAsFixed(1))}B';
   } else if (number >= 1000000) {
     double result = number / 1000000;
-    return '${result.toStringAsFixed(1)}M';
+    return '${removeTrailingZero(result.toStringAsFixed(1))}M';
   } else if (number >= 1000) {
     double result = number / 1000;
-    return '${result.toStringAsFixed(1)}K';
+    return '${removeTrailingZero(result.toStringAsFixed(1))}K';
   } else {
     return number.toString();
   }
 }
 
-class CustomMessages implements Messages {
+String removeTrailingZero(String str) {
+  // Remove trailing ".0" if present
+  return str.replaceAll(RegExp(r'\.0$'), '');
+}
+
+class CustomMessages implements LookupMessages {
   @override
   String prefixAgo() => '';
-
+  @override
+  String prefixFromNow() => '';
   @override
   String suffixAgo() => 'ago';
-
   @override
-  String secsAgo(int seconds) => '$seconds seconds';
-
+  String suffixFromNow() => 'from now';
   @override
-  String minAgo(int minutes) => '1 minute';
-
+  String lessThanOneMinute(int seconds) => 'a moment';
   @override
-  String minsAgo(int minutes) => '$minutes minutes';
-
+  String aboutAMinute(int minutes) => '1 minute';
   @override
-  String hourAgo(int minutes) => '1 hour';
-
+  String minutes(int minutes) => '$minutes minutes';
   @override
-  String hoursAgo(int hours) => '$hours hours';
-
+  String aboutAnHour(int minutes) => '1 hour';
   @override
-  String dayAgo(int hours) => '1 day';
-
+  String hours(int hours) => '$hours hours';
   @override
-  String daysAgo(int days) => '$days days';
-
+  String aDay(int hours) => '1 day';
+  @override
+  String days(int days) => '$days days';
+  @override
+  String aboutAMonth(int days) => '1 month';
+  @override
+  String months(int months) => '$months months';
+  @override
+  String aboutAYear(int year) => '1 year';
+  @override
+  String years(int years) => '$years years';
   @override
   String wordSeparator() => ' ';
 }
 
 String calculateRelativeTime(String timestamp) {
-  GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
+  timeago.setLocaleMessages('en', CustomMessages());
   var convertedTimestamp =
-      DateTime.parse(timestamp); // Converting into [DateTime] object
-  var result = GetTimeAgo.parse(convertedTimestamp);
+      DateTime.parse(timestamp);
+  var result = timeago.format(convertedTimestamp, locale: 'en');
   return result;
 }

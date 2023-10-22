@@ -15,12 +15,16 @@ class ChannelInfoHeader extends StatelessWidget {
             constraints: const BoxConstraints(
               maxHeight: 80.0,
             ),
-            child: ClipRRect(
-              child: Image.network(
-                channelItem.brandingSettings.image!.bannerExternalUrl,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                height: double.infinity,
+            child: Visibility(
+              visible:
+                  channelItem.brandingSettings.image?.bannerExternalUrl != null,
+              child: ClipRRect(
+                child: Image.network(
+                  channelItem.brandingSettings.image?.bannerExternalUrl ?? "",
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                ),
               ),
             ),
           ),
