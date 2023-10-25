@@ -1,18 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Localized {
+class LocalizationInfo {
   final String? description;
-  final String title;
+  final String? title;
 
-
-  const Localized ({
+  const LocalizationInfo({
     required this.description,
-    required this.title,
+    required this.title
   });
 
-  factory Localized.fromJson(Map<String, dynamic> json) {
-    return Localized(
+  factory LocalizationInfo.fromJson(Map<String, dynamic> json) {
+    return LocalizationInfo(
       description: json['description'],
       title: json['title'],
     );

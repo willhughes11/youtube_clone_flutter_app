@@ -1,4 +1,4 @@
-# Live Sync Flutter App
+# Youtube Clone Flutter App
 
 A new Flutter project.
 

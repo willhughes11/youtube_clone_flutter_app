@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_clone_flutter_app/api/video_categories.dart';
 
-import 'package:live_sync_flutter_app/api/videos.dart';
-import 'package:live_sync_flutter_app/models/video_categories.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/models/popular_videos.dart';
-import 'package:live_sync_flutter_app/widgets/video_category_app_bar.dart';
-import 'package:live_sync_flutter_app/widgets/video_sliver_list_view.dart';
-import 'package:live_sync_flutter_app/widgets/video_loading_spinner.dart';
+import 'package:youtube_clone_flutter_app/api/videos.dart';
+import 'package:youtube_clone_flutter_app/models/video_categories/video_categories.dart';
+import 'package:youtube_clone_flutter_app/pages/root_page.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/models/videos/videos.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/video_categories/video_category_app_bar.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/videos/video_sliver_list_view.dart';
+import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 import 'dart:io';
 
+import 'package:youtube_clone_flutter_app/widgets/global/home_app_bar.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final MyBuilder builder;
+  const HomePage({super.key, required this.builder});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,12 +25,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String selectedVideCategoryId = "0";
   late Future<VideoCategories> futureVideoCategories;
-  late Future<PopularVideos> futurePopularVideos;
+  late Future<Videos> futurePopularVideos;
   late String baseUrl;
   bool _isLoadingNewVideos = false;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
-  late PopularVideos data;
+  late Videos data;
 
   @override
   void initState() {
@@ -67,7 +72,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _isLoadingNewVideos = true;
       });
-      await Future.delayed(const Duration(seconds: 1));
       final newPopularVideos =
           await fetchPopularVideos(baseUrl, categoryId, pageToken);
       setState(() {
@@ -84,8 +88,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _handleRefresh() async {
-    await Future.delayed(const Duration(seconds: 1));
-    // Perform your data fetching or reloading logic here
     final newPopularVideos =
         await fetchPopularVideos(baseUrl, selectedVideCategoryId);
     setState(() {
@@ -104,7 +106,6 @@ class _HomePageState extends State<HomePage> {
     if (!_isLoading &&
         _scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent) {
-      // User has scrolled to the end of the list, load more data.
       _loadMoreData();
     }
   }
@@ -116,26 +117,33 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true;
     });
 
-    // Fetch more data and append it to the 'data' list.
-    PopularVideos newData = await fetchPopularVideos(
+    Videos newData = await fetchPopularVideos(
         baseUrl, selectedVideCategoryId, data.nextPageToken);
     data.updateFromApiData(newData);
-
-    var fuPopVids = await futurePopularVideos;
-    debugPrint("FuPopVids: ${fuPopVids.items.length}");
-    debugPrint("Data: ${data.items.length}");
 
     setState(() {
       _isLoading = false;
     });
   }
 
+  void scrollToTop() {
+    if (_scrollController.positions.isNotEmpty) {
+      _scrollController.animateTo(
+        1,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    widget.builder.call(context, scrollToTop);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: customBlack.shade800,
+        appBar: const HomeAppBar(),
+        backgroundColor: customBlack.shade900,
         body: RefreshIndicator(
           onRefresh: _handleRefresh,
           color: Colors.grey,
@@ -157,15 +165,15 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              FutureBuilder<PopularVideos>(
+              FutureBuilder<Videos>(
                 future: futurePopularVideos,
                 builder: (context, popularVideosSnapshot) {
-                  if (popularVideosSnapshot.connectionState ==
-                          ConnectionState.waiting ||
+                  var connectionState = popularVideosSnapshot.connectionState;
+                  if (connectionState == ConnectionState.waiting ||
                       _isLoadingNewVideos == true) {
                     return const SliverToBoxAdapter(
-                      child: VideoLoadingSpinner(
-                        optionalColor: Colors.red,
+                      child: CustomLoadingSpinner(
+                        optionalColor: Colors.grey,
                       ),
                     );
                   } else if (popularVideosSnapshot.hasError) {
@@ -174,7 +182,10 @@ class _HomePageState extends State<HomePage> {
                     );
                   } else {
                     return VideoSliverListView(
+                      baseUrl: baseUrl,
                       data: popularVideosSnapshot.data,
+                      isLoading: _isLoading,
+                      connectionState: connectionState,
                     );
                   }
                 },
@@ -184,8 +195,8 @@ class _HomePageState extends State<HomePage> {
                     ? const Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 64.0),
-                          child: VideoLoadingSpinner(
-                            optionalColor: Colors.red,
+                          child: CustomLoadingSpinner(
+                            optionalColor: Colors.grey,
                           ),
                         ),
                       )

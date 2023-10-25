@@ -1,24 +1,23 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:live_sync_flutter_app/models/common/localized.dart';
-import 'package:live_sync_flutter_app/models/common/thumbnails.dart';
+import 'package:youtube_clone_flutter_app/models/common/localization_info.dart';
+import 'package:youtube_clone_flutter_app/models/common/thumbnails.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Snippet {
-  final String? categoryId;
+class VideoSnippet {
   final String channelId;
-  final String? channelTitle;
+  final String categoryId;
+  final String channelTitle;
   final String? defaultAudioLanguage;
   final String? defaultLanguage;
   final String? description;
-  final String? liveBroadcastContent;
-  final String? publishedAt;
+  final String liveBroadcastContent;
+  final String publishedAt;
   final String title;
-  final Localized? loacalized;
-  final Thumbnails? thumbnails;
+  final LocalizationInfo localized;
+  final Thumbnails thumbnails;
   final Thumbnails? channelThumbnails;
-  final bool? assignable;
   
-  const Snippet ({
+  const VideoSnippet ({
     required this.categoryId,
     required this.channelId,
     required this.channelTitle,
@@ -28,14 +27,13 @@ class Snippet {
     required this.liveBroadcastContent,
     required this.publishedAt,
     required this.title,
-    required this.loacalized,
+    required this.localized,
     required this.thumbnails,
     required this.channelThumbnails,
-    required this.assignable,
   });
 
-  factory Snippet.fromJson(Map<String, dynamic> json) {
-    return Snippet(
+  factory VideoSnippet.fromJson(Map<String, dynamic> json) {
+    return VideoSnippet(
       categoryId: json['categoryId'],
       channelId: json['channelId'],
       channelTitle: json['channelTitle'],
@@ -45,10 +43,9 @@ class Snippet {
       liveBroadcastContent: json['liveBroadcastContent'],
       publishedAt: json['publishedAt'],
       title: json['title'],
-      loacalized: json['localized'] != null ? Localized.fromJson(json['localized']) : null,
-      thumbnails: json['thumbnails'] != null ? Thumbnails.fromJson(json['thumbnails']) : null,
+      localized: LocalizationInfo.fromJson(json['localized']),
+      thumbnails: Thumbnails.fromJson(json['thumbnails']),
       channelThumbnails: json['channelThumbnails'] != null ? Thumbnails.fromJson(json['channelThumbnails']) : null,
-      assignable: json['assignable']
     );
   }
 }

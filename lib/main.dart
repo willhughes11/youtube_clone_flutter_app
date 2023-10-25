@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:live_sync_flutter_app/utils/colors.dart';
-import 'package:live_sync_flutter_app/pages/root_page.dart';
+import 'package:youtube_clone_flutter_app/utils/colors.dart';
+import 'package:youtube_clone_flutter_app/pages/root_page.dart';
 
 void main() {
   runApp(const LiveSyncApp());

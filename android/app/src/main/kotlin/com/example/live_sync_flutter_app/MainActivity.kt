@@ -1,4 +1,4 @@
-package com.example.live_sync_flutter_app
+package com.example.youtube_clone_flutter_app
 
 import io.flutter.embedding.android.FlutterActivity
 

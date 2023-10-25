@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(explicitToJson: true)
-class ContentDetails {
+class VideoContentDetails {
   final String caption;
   final Object contentRating;
   final String definition;
@@ -10,8 +10,7 @@ class ContentDetails {
   final bool? licensedContent;
   final String projection;
 
-
-  const ContentDetails ({
+  const VideoContentDetails ({
     required this.caption,
     required this.contentRating,
     required this.definition,
@@ -21,8 +20,8 @@ class ContentDetails {
     required this.projection,
   });
 
-  factory ContentDetails.fromJson(Map<String, dynamic> json) {
-    return ContentDetails(
+  factory VideoContentDetails.fromJson(Map<String, dynamic> json) {
+    return VideoContentDetails(
       caption: json['caption'],
       contentRating: json['contentRating'],
       definition: json['definition'],
