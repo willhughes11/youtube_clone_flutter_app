@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Status {
-  final bool isLinked;
+  final bool? isLinked;
   final String? longUploadStatus;
   final String privacyStatus;
 

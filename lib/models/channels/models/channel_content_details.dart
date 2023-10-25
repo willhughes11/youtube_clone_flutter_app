@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:youtube_clone_flutter_app/models/channel/models/related_playlists.dart';
+import 'package:youtube_clone_flutter_app/models/channels/models/related_playlists.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ChannelContentDetails {

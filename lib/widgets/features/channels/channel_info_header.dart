@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_clone_flutter_app/models/channel/models/channel_item.dart';
+import 'package:youtube_clone_flutter_app/models/channels/models/channel_item.dart';
 import 'package:youtube_clone_flutter_app/utils/functions.dart';
 
 class ChannelInfoHeader extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youtube_clone_flutter_app/models/videos/videos.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
 import 'package:youtube_clone_flutter_app/utils/functions.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/channel/skeleton/channel_video_card_skeleton.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/channels/skeletons/channel_video_card_skeleton.dart';
 
 class ChannelVideosTabView extends StatelessWidget {
   final String channelId;
@@ -12,6 +12,7 @@ class ChannelVideosTabView extends StatelessWidget {
   final Future<Videos> futureVideosByChannelId;
   final Function(int) fetchChannelVideosAndUpdateState;
   final bool isLoading;
+  final ScrollController scrollController;
   const ChannelVideosTabView({
     super.key,
     required this.channelId,
@@ -21,6 +22,7 @@ class ChannelVideosTabView extends StatelessWidget {
     required this.futureVideosByChannelId,
     required this.fetchChannelVideosAndUpdateState,
     required this.isLoading,
+    required this.scrollController,
   });
 
   @override
@@ -66,6 +68,7 @@ class ChannelVideosTabView extends StatelessWidget {
               if (connectionState == ConnectionState.waiting || isLoading) {
                 return ListView.builder(
                   itemCount: 5,
+                  controller: scrollController,
                   itemBuilder: (context, index) {
                     return ChannelVideoCardSkeleton(
                       isLoading: isLoading,

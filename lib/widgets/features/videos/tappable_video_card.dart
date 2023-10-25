@@ -124,6 +124,7 @@ class TappableVideoCard extends StatelessWidget {
         padding: const EdgeInsets.all(0.0),
         child: GestureDetector(
           onTap: () {
+            debugPrint(channelId);
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {

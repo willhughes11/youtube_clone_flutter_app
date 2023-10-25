@@ -5,7 +5,7 @@ class TopicDetails {
   final List<String> topicCategories;
   final List<String>? topicIds;
 
-  const TopicDetails ({
+  const TopicDetails({
     required this.topicCategories,
     required this.topicIds,
   });
@@ -14,8 +14,11 @@ class TopicDetails {
     var topicCategoriesFromJson = json['topicCategories'];
     List<String> topicCategories = List<String>.from(topicCategoriesFromJson);
 
-    var topicIdsFromJson = json['topicCategories'];
-    List<String> topicIds = List<String>.from(topicIdsFromJson);
+    List<String> topicIds = [];
+    var topicIdsFromJson = json['topicIds'];
+    if (topicIdsFromJson != null && topicIdsFromJson is List) {
+      topicIds = List<String>.from(topicIdsFromJson);
+    }
 
     return TopicDetails(
       topicCategories: topicCategories,

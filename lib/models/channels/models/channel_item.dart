@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:youtube_clone_flutter_app/models/channel/models/branding_settings.dart';
-import 'package:youtube_clone_flutter_app/models/channel/models/channel_content_details.dart';
-import 'package:youtube_clone_flutter_app/models/channel/models/channel_snippet.dart';
-import 'package:youtube_clone_flutter_app/models/channel/models/status.dart';
+import 'package:youtube_clone_flutter_app/models/channels/models/branding_settings.dart';
+import 'package:youtube_clone_flutter_app/models/channels/models/channel_content_details.dart';
+import 'package:youtube_clone_flutter_app/models/channels/models/channel_snippet.dart';
+import 'package:youtube_clone_flutter_app/models/common/status.dart';
 import 'package:youtube_clone_flutter_app/models/common/statistics.dart';
 import 'package:youtube_clone_flutter_app/models/common/topic_details.dart';
 

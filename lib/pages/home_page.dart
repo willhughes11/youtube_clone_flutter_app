@@ -7,7 +7,7 @@ import 'package:youtube_clone_flutter_app/pages/root_page.dart';
 import 'package:youtube_clone_flutter_app/utils/colors.dart';
 import 'package:youtube_clone_flutter_app/models/videos/videos.dart';
 import 'package:youtube_clone_flutter_app/widgets/features/video_categories/video_category_app_bar.dart';
-import 'package:youtube_clone_flutter_app/widgets/features/video/video_sliver_list_view.dart';
+import 'package:youtube_clone_flutter_app/widgets/features/videos/video_sliver_list_view.dart';
 import 'package:youtube_clone_flutter_app/widgets/global/custom_loading_spinner.dart';
 
 import 'dart:io';
